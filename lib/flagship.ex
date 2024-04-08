@@ -8,6 +8,8 @@ defmodule Flagship do
   the test
   """
 
+  @valid_implementations [Flagship.LaunchDarkly, Flagship.LaunchDarklyTest]
+
   def set_flag(name, value) when is_binary(name) and is_boolean(value) do
     {:ok, flag} = impl().test_flag(name)
     flag_builder = impl().set_value(value, flag)
