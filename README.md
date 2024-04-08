@@ -4,13 +4,12 @@ Flagship acts as an interface and tooling for working with launchdarkly feature 
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `test_with_flag` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `flagship` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:test_with_flag, "~> 0.1.1"}
+    {:flagship, "~> 0.1.1"}
   ]
 end
 ```
