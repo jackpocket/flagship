@@ -1,0 +1,47 @@
+# Flagship
+
+Flagship acts as an interface and tooling for working with launchdarkly feature flags.
+
+## Installation
+
+If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+by adding `test_with_flag` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:test_with_flag, "~> 0.1.1"}
+  ]
+end
+```
+
+Start up the application (in your application.ex file):
+```elixir
+children =
+  [
+    {Flagship.FeatureFlags, name: Flagship.FeatureFlags},
+    ...
+  ]
+```
+
+And configure the application (in config.exs or similar):
+```elixir
+config :flagship,
+  ld_sdk_key: "<ENTER SDK KEY HERE>",
+  ld_client_options: %{
+    file_datasource: true,
+    send_events: false,
+    file_paths: ['launch_darkly_local_config.json'],
+    feature_store: :ldclient_storage_map,
+    file_auto_update: true,
+    file_poll_interval: 1000
+  }
+```
+
+## Running tests
+The tests rely on a test double for the LaunchDarkly implementation.
+```elixir
+FLAGSHIP_IMPLEMENTATION=Flagship.LaunchDarklyTest mix test
+```
+
+
