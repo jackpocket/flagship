@@ -58,6 +58,7 @@ defmodule Flagship.FeatureFlags do
     Logger.info("Waiting for LaunchDarkly flag data...")
 
     if Flagship.FeatureFlags.initialized?() do
+      Logger.info("LaunchDarkly flag data is ready.")
       :initialized
     else
       Process.send_after(self(), :wait_for_initialization, @check_ms)
