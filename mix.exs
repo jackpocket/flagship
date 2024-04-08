@@ -1,7 +1,7 @@
 defmodule Flagship.MixProject do
   use Mix.Project
 
-  @version "0.1.2"
+  @version "0.1.3"
   @source_url "https://github.com/jackpocket/flagship"
 
   def project do
@@ -44,7 +44,8 @@ defmodule Flagship.MixProject do
       name: "flagship",
       maintainers: ["Todd Resudek"],
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => @source_url}
+      links: %{"GitHub" => @source_url},
+      files: ["lib", "mix.exs", "README.md", "LICENSE.md", "test/support/launch_darkly.ex"]
     ]
   end
 

@@ -9,7 +9,7 @@ The package can be installed by adding `flagship` to your list of dependencies i
 ```elixir
 def deps do
   [
-    {:flagship, "~> 0.1.2"}
+    {:flagship, "~> 0.1.3"}
   ]
 end
 ```
