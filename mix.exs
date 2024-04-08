@@ -1,7 +1,7 @@
 defmodule Flagship.MixProject do
   use Mix.Project
 
-  @version "0.1.4"
+  @version "0.1.6"
   @source_url "https://github.com/jackpocket/flagship"
 
   def project do

@@ -50,6 +50,11 @@ defmodule Flagship.FeatureFlags do
     {:reply, LaunchDarkly.variation(key, location_code, fallback), state}
   end
 
+  def handle_info(:wait_for_initialization, state) do
+    wait_for_initialization()
+    {:noreply, state}
+  end
+
   def initialized? do
     LaunchDarkly.initialized(:default)
   end
