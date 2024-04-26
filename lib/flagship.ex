@@ -22,7 +22,7 @@ defmodule Flagship do
   end
 
   @doc """
-  Sets the flag value, then executess the given test, and resets the flag value
+  Sets the flag value, then executes the given test, and resets the flag value
   """
   def with_flag(name, values, test) when is_list(values) and is_binary(name) do
     for value <- values, do: with_flag(name, value, test)

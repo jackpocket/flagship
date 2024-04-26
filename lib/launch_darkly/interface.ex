@@ -6,7 +6,7 @@ defmodule Flagship.LaunchDarkly.Interface do
   #ldclient
   @callback initialized(tag :: atom()) :: boolean()
   @callback start_instance(sdk_key :: binary(), opts :: map()) :: :ok | {:error, atom(), term()}
-  @callback variation(flag_name :: binary(), location_code :: binary(), fallback :: term()) :: term()
+  @callback variation(flag_name :: binary(), context :: map(), fallback :: term()) :: term()
 
   # ldclient_testdata
   @callback test_update(flag_builder :: term()) :: :ok

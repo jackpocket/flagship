@@ -14,22 +14,32 @@ defmodule Flagship.FeatureFlags do
   Gets a feature flag value (or fallback) for the given user key if targeted individually
 
   ## Examples
-      iex> App.FeatureFlags.get(FeatureFlags, "flag_name", false, :none)
+      iex> App.FeatureFlags.get(FeatureFlags, "flag_name", false, nil)
       true
 
       Flag not set, and fallback is true
-      iex> App.FeatureFlags.get("flag_name", true, "OH")
+      iex> App.FeatureFlags.get("flag_name", true, "userkey")
       true
 
-      In the UI, add "CO" as an individual target
-      iex> App.FeatureFlags.get("flag_name", false, "OH")
-      false
+  The default context is the user key, but you can also pass in a map with the context
 
-      iex> App.FeatureFlags.get("flag_name", false, "CO")
+  ## Examples
+      iex> App.FeatureFlags.get("flag_name", false, %{:kind => "user", :key => "user_key"})
+      true
+
+      iex> App.FeatureFlags.get("flag_name", false, %{:kind => "location", :key => location_code})
       true
   """
-  def get(key, fallback, location_code \\ :none) do
-    GenServer.call(__MODULE__, {:get, key, fallback, String.upcase(to_string(location_code))})
+  def get(key, fallback) do
+    GenServer.call(__MODULE__, {:get, key, fallback, %{}})
+  end
+
+  def get(key, fallback, context) when is_map(context) do
+    GenServer.call(__MODULE__, {:get, key, fallback, context})
+  end
+
+  def get(key, fallback, user_key) do
+    GenServer.call(__MODULE__, {:get, key, fallback, %{:kind => "user", :key => user_key}})
   end
 
   @doc false
@@ -42,12 +52,12 @@ defmodule Flagship.FeatureFlags do
   end
 
   @doc false
-  def handle_call({:get, key, fallback, location_code}, _from, state) do
+  def handle_call({:get, key, fallback, context}, _from, state) do
     Logger.info(
-      "Looking up value for LaunchDarkly flag: #{key} with location code: #{location_code}"
+      "Looking up value for LaunchDarkly flag: #{key} with context: #{inspect(context)}"
     )
 
-    {:reply, LaunchDarkly.variation(key, location_code, fallback), state}
+    {:reply, LaunchDarkly.variation(key, context, fallback), state}
   end
 
   def handle_info(:wait_for_initialization, state) do

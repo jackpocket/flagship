@@ -37,7 +37,18 @@ config :flagship,
   }
 ```
 
-## Running tests
+And configure for your test environment (in text.exs):
+```elixir
+config :flagship,
+  ld_sdk_key: "test key",
+  ld_client_options: %{
+    datasource: :testdata,
+    send_events: false,
+    feature_store: :ldclient_storage_map
+  }
+```
+
+## Running tests on this project
 The tests rely on a test double for the LaunchDarkly implementation.
 ```elixir
 FLAGSHIP_IMPLEMENTATION=Flagship.LaunchDarklyTest mix test

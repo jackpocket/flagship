@@ -11,7 +11,7 @@ defmodule Flagship.LaunchDarkly do
   def start_instance(sdk_key, opts), do: :ldclient.start_instance(String.to_charlist(sdk_key), opts)
 
   @impl true
-  def variation(flag_name, location_code, fallback), do: :ldclient.variation(flag_name, %{:kind => "location", :key => location_code}, fallback)
+  def variation(flag_name, context, fallback), do: :ldclient.variation(flag_name, context, fallback)
 
   @impl true
   def test_update(flag_builder), do: :ldclient_testdata.update(flag_builder)
