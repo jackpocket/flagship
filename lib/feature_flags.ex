@@ -52,11 +52,10 @@ defmodule Flagship.FeatureFlags do
   end
 
   @doc false
-  def handle_call({:get, key, fallback, context}, _from, state) do
+  def handle_call({:get, key, fallback, context}, from, state) do
     Logger.info(
-      "Looking up value for LaunchDarkly flag: #{key} with context: #{inspect(context)}"
+      "Looking up value for LaunchDarkly flag: #{key} with context: #{inspect(context)} from: #{inspect(from)}}"
     )
-
     {:reply, LaunchDarkly.variation(key, context, fallback), state}
   end
 
