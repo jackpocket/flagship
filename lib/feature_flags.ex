@@ -31,7 +31,7 @@ defmodule Flagship.FeatureFlags do
       true
   """
   def get(key, fallback) do
-    GenServer.call(__MODULE__, {:get, key, fallback, %{}})
+    GenServer.call(__MODULE__, {:get, key, fallback, %{:kind => "location", :key => "NONE"}})
   end
 
   def get(key, fallback, context) when is_map(context) do
