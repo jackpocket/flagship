@@ -85,6 +85,6 @@ defmodule Flagship.FeatureFlags do
   end
 
   defp default_context do
-    Application.get_env(:flagship, :ld_default_context, %{})
+    Application.get_env(:flagship, :default_context, %{})
   end
 end
