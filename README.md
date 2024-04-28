@@ -27,7 +27,7 @@ And configure the application (in config.exs or similar):
 ```elixir
 config :flagship,
   ld_sdk_key: "<ENTER SDK KEY HERE>", # required
-  default_context: %{}, # optional - expects a map that represents a launchdarkly context
+  default_context: %{}, # optional - expects a map that represents a launchdarkly context (https://docs.launchdarkly.com/home/contexts)
   ld_client_options: %{ # all values are optional
     file_datasource: true,
     send_events: false,
