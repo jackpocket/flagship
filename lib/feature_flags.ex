@@ -11,27 +11,32 @@ defmodule Flagship.FeatureFlags do
   end
 
   @doc """
-  Gets a feature flag value (or fallback) for the given user key if targeted individually
+  Gets a feature flag value (or fallback) for the given flag key and context
 
   ## Examples
-      iex> App.FeatureFlags.get(FeatureFlags, "flag_name", false, nil)
+      iex> Flagship.FeatureFlags.get("flag_name", false)
       true
 
       Flag not set, and fallback is true
-      iex> App.FeatureFlags.get("flag_name", true, "userkey")
+      iex> Flagship.FeatureFlags.get("flag_name", true)
       true
 
-  The default context is the user key, but you can also pass in a map with the context
+  The context can be sent as:
+   a string, in which case it will be treated as a user key.
+   a map, in which case it will be treated as a context object.
+   or not at all, in which case it will be treated as a default context.
+
+  * for information on setting the default context, see the README
 
   ## Examples
-      iex> App.FeatureFlags.get("flag_name", false, %{:kind => "user", :key => "user_key"})
+      iex> Flagship.FeatureFlags.get("flag_name", false, "user_key")
       true
 
-      iex> App.FeatureFlags.get("flag_name", false, %{:kind => "location", :key => location_code})
+      iex> Flag.FeatureFlags.get("flag_name", false, %{:kind => "location", :key => location_code})
       true
   """
   def get(key, fallback) do
-    GenServer.call(__MODULE__, {:get, key, fallback, %{:kind => "location", :key => "NONE"}})
+    GenServer.call(__MODULE__, {:get, key, fallback, default_context()})
   end
 
   def get(key, fallback, context) when is_map(context) do
@@ -77,5 +82,9 @@ defmodule Flagship.FeatureFlags do
     else
       Process.send_after(self(), :wait_for_initialization, @check_ms)
     end
+  end
+
+  defp default_context do
+    Application.get_env(:flagship, :ld_default_context, %{})
   end
 end

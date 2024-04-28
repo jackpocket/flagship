@@ -26,8 +26,9 @@ children =
 And configure the application (in config.exs or similar):
 ```elixir
 config :flagship,
-  ld_sdk_key: "<ENTER SDK KEY HERE>",
-  ld_client_options: %{
+  ld_sdk_key: "<ENTER SDK KEY HERE>", # required
+  default_context: %{}, # optional - expects a map that represents a launchdarkly context
+  ld_client_options: %{ # all values are optional
     file_datasource: true,
     send_events: false,
     file_paths: ['launch_darkly_local_config.json'],
