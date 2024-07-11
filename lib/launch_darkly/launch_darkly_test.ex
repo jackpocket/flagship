@@ -26,6 +26,15 @@ defmodule Flagship.LaunchDarklyTest do
   @impl true
   def value_for_all(value, flag_builder), do: Map.put(flag_builder, :on, value)
 
+  @impl true
+  def identify(_user), do: :ok
+
+  @impl true
+  def stop_all_instances(), do: :ok
+
+  @impl true
+  def new_user(user), do: user
+
   #### Private functions ####
 
   defp flag(flag_name) do
