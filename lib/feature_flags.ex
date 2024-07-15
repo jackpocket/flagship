@@ -90,6 +90,11 @@ defmodule Flagship.FeatureFlags do
     {:ok, %{}}
   end
 
+  def terminate(_reason, _state) do
+    stop_all_instances()
+    :normal
+  end
+
   @doc false
   def handle_call({:get, key, fallback, context}, from, state) do
     Logger.info(
