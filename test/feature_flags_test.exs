@@ -27,6 +27,15 @@ defmodule Flagship.FeatureFlagsTest do
              end) =~
                "Looking up value for LaunchDarkly flag: fake_flag_name with context:"
     end
+
+    test "gets the value for a flag when the context is a map" do
+      assert capture_log(fn ->
+        Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+        {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+        assert Flagship.FeatureFlags.get("fake_flag_name", false, ~c"user-two") == false
+      end) =~
+        "Looking up value for LaunchDarkly flag: fake_flag_name with context:"
+    end
   end
 
   describe "new_user/1" do
