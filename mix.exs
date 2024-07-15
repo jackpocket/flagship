@@ -28,7 +28,7 @@ defmodule Flagship.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_doc, "~> 0.31.2"},
+      {:ex_doc, "~> 0.31.2", only: :dev},
       {:ldclient, "~> 3.1", hex: :launchdarkly_server_sdk}
     ]
   end
