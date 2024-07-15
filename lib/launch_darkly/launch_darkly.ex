@@ -8,10 +8,15 @@ defmodule Flagship.LaunchDarkly do
   def initialized(tag), do: :ldclient.initialized(tag)
 
   @impl true
-  def start_instance(sdk_key, opts), do: :ldclient.start_instance(String.to_charlist(sdk_key), opts)
+  def start_instance(sdk_key, opts),
+    do: :ldclient.start_instance(String.to_charlist(sdk_key), opts)
 
   @impl true
-  def variation(flag_name, context, fallback), do: :ldclient.variation(flag_name, context, fallback)
+  def stop_all_instances(), do: :ldclient.stop_all_instances()
+
+  @impl true
+  def variation(flag_name, context, fallback),
+    do: :ldclient.variation(flag_name, context, fallback)
 
   @impl true
   def test_update(flag_builder), do: :ldclient_testdata.update(flag_builder)
@@ -24,4 +29,10 @@ defmodule Flagship.LaunchDarkly do
 
   @impl true
   def value_for_all(value, flag), do: :ldclient_flagbuilder.value_for_all(value, flag)
+
+  @impl true
+  def new_user(user), do: :ldclient_user.new_from_map(user)
+
+  @impl true
+  def identify(user), do: :ldclient.identify(user)
 end

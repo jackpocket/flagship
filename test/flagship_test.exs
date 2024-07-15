@@ -9,6 +9,10 @@ defmodule FlagshipTest do
     test "sets a flag to false" do
       assert Flagship.set_flag("flag_name", false) == :ok
     end
+
+    test "sets a flag to non-boolean value" do
+      assert Flagship.set_flag("flag_name", 53704) == :ok
+    end
   end
 
   describe "with_flag/3" do

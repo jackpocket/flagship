@@ -47,6 +47,40 @@ defmodule Flagship.FeatureFlags do
     GenServer.call(__MODULE__, {:get, key, fallback, %{:kind => "user", :key => user_key}})
   end
 
+  @doc """
+  Reports details about a LaunchDarkly user or context
+
+  ## Examples
+      iex> Flagship.FeatureFlags.identify(%{:key => "user_key", :country => "US"})
+      :ok
+  """
+  def identify(user) do
+    GenServer.call(__MODULE__, {:identify, user})
+  end
+
+  @doc """
+  Creates a new LaunchDarkly user
+
+  ## Examples
+      iex> Flagship.FeatureFlags.new_user(%{:key => "user_key", :country => "US"})
+      %{:key => "user_key", :ip => "" :country => "US", :email => "foo@bar.baz", :first_name => "Foo", :last_name => "Bar", :avatar => "http://www.gravatar.com/avatar/1", :name => "Foo Bar", :anonymous => false, :custom => %{}, :private_attribute_names => []}
+
+  """
+  def new_user(user_map) do
+    GenServer.call(__MODULE__, {:new_user, user_map})
+  end
+
+  @doc """
+  Stops all LaunchDarkly client instances
+
+  ## Examples
+      iex> Flagship.FeatureFlags.stop_all_instances()
+      :ok
+  """
+  def stop_all_instances() do
+    GenServer.call(__MODULE__, {:stop_all_instances})
+  end
+
   @doc false
   def init(:ok) do
     ldclient_options = Application.get_env(:flagship, :ld_client_options, %{})
@@ -61,7 +95,26 @@ defmodule Flagship.FeatureFlags do
     Logger.info(
       "Looking up value for LaunchDarkly flag: #{key} with context: #{inspect(context)} from: #{inspect(from)}}"
     )
+
     {:reply, LaunchDarkly.variation(key, context, fallback), state}
+  end
+
+  @doc false
+  def handle_call({:identify, user}, from, state) do
+    Logger.info("Identifying LaunchDarkly user: #{inspect(user)} from: #{inspect(from)}}")
+    {:reply, LaunchDarkly.identify(user), state}
+  end
+
+  @doc false
+  def handle_call({:stop_all_instances}, from, state) do
+    Logger.info("Stopping all LaunchDarkly client instances from: #{inspect(from)}")
+    {:reply, LaunchDarkly.stop_all_instances(), state}
+  end
+
+  @doc false
+  def handle_call({:new_user, user_map}, from, state) do
+    Logger.info("Creating a LaunchDarkly user: #{inspect(user_map)} from: #{inspect(from)}}")
+    {:reply, LaunchDarkly.new_user(user_map), state}
   end
 
   def handle_info(:wait_for_initialization, state) do
