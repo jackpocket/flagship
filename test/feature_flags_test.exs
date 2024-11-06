@@ -66,5 +66,5 @@ defmodule Flagship.FeatureFlagsTest do
         assert Flagship.FeatureFlags.stop_all_instances() == :ok
       end) =~ "Stopping all LaunchDarkly client instances"
     end
-  end
+    end
 end
