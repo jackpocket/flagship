@@ -30,41 +30,41 @@ defmodule Flagship.FeatureFlagsTest do
 
     test "gets the value for a flag when the context is a map" do
       assert capture_log(fn ->
-        Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
-        {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
-        assert Flagship.FeatureFlags.get("fake_flag_name", false, ~c"user-two") == false
-      end) =~
-        "Looking up value for LaunchDarkly flag: fake_flag_name with context:"
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+               assert Flagship.FeatureFlags.get("fake_flag_name", false, ~c"user-two") == false
+             end) =~
+               "Looking up value for LaunchDarkly flag: fake_flag_name with context:"
     end
   end
 
   describe "new_user/1" do
     test "creates a new user" do
       assert capture_log(fn ->
-        Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
-        {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
-        assert Flagship.FeatureFlags.new_user(%{key: "userkey"}) == %{key: "userkey"}
-      end) =~ "Creating a LaunchDarkly user:"
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+               assert Flagship.FeatureFlags.new_user(%{key: "userkey"}) == %{key: "userkey"}
+             end) =~ "Creating a LaunchDarkly user:"
     end
   end
 
   describe "identify/1" do
     test "identifies a user" do
       assert capture_log(fn ->
-        Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
-        {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
-        assert Flagship.FeatureFlags.identify(%{key: "userkey"}) == :ok
-      end) =~ "Identifying LaunchDarkly user: %{key: \"userkey\"}"
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+               assert Flagship.FeatureFlags.identify(%{key: "userkey"}) == :ok
+             end) =~ "Identifying LaunchDarkly user: %{key: \"userkey\"}"
     end
   end
 
   describe "stop_all_instances/0" do
     test "stops all instances" do
       assert capture_log(fn ->
-        Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
-        {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
-        assert Flagship.FeatureFlags.stop_all_instances() == :ok
-      end) =~ "Stopping all LaunchDarkly client instances"
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+               assert Flagship.FeatureFlags.stop_all_instances() == :ok
+             end) =~ "Stopping all LaunchDarkly client instances"
     end
-    end
+  end
 end
