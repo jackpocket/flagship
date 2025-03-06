@@ -1,7 +1,7 @@
 defmodule Flagship.MixProject do
   use Mix.Project
 
-  @version "0.5.0"
+  @version "0.5.1"
   @source_url "https://github.com/jackpocket/flagship"
 
   def project do
@@ -29,8 +29,8 @@ defmodule Flagship.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.34.2", only: :dev},
-      {:ldclient, "~> 3.4", hex: :launchdarkly_server_sdk},
-      {:shotgun, "~> 1.1.0", override: true},
+      {:ldclient, "~> 3.5", hex: :launchdarkly_server_sdk},
+      {:shotgun, "~> 1.1.0"},
       {:telemetry_registry, "~> 0.3.2"}
     ]
   end
