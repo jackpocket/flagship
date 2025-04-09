@@ -35,4 +35,8 @@ defmodule Flagship.LaunchDarkly do
 
   @impl true
   def identify(user), do: :ldclient.identify(user)
+
+  @impl true
+  @since "0.6.1"
+  def track(event_name, context, data), do: :ldclient.track(event_name, context, data)
 end
