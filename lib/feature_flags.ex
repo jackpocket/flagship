@@ -95,6 +95,10 @@ defmodule Flagship.FeatureFlags do
     :normal
   end
 
+  def track(event_name, context, data, tag \\ nil) do
+    GenServer.call(__MODULE__, {:track, event_name, context, data, tag})
+  end
+
   @doc false
   def handle_call({:get, key, fallback, context}, from, state) do
     Logger.info(
@@ -120,6 +124,16 @@ defmodule Flagship.FeatureFlags do
   def handle_call({:new_user, user_map}, from, state) do
     Logger.info("Creating a LaunchDarkly user: #{inspect(user_map)} from: #{inspect(from)}}")
     {:reply, LaunchDarkly.new_user(user_map), state}
+  end
+
+  @doc false
+  def handle_call({:track, event_name, context, data, tag}, from, state) do
+    Logger.info(
+      "Tracking LaunchDarkly event: #{inspect(event_name)} with context: #{inspect(context)} and data: #{inspect(data)} with tag: #{tag}"
+    )
+
+    Task.async(LaunchDarkly, :track, [event_name, context, data, tag])
+    {:reply, :ok, state}
   end
 
   def handle_info(:wait_for_initialization, state) do

@@ -67,4 +67,37 @@ defmodule Flagship.FeatureFlagsTest do
              end) =~ "Stopping all LaunchDarkly client instances"
     end
   end
+
+  describe "track/3" do
+    test "tracks an event" do
+      assert capture_log(fn ->
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+
+               assert Flagship.FeatureFlags.track(
+                        "event_name",
+                        %{:key => "user_key", :country => "US"},
+                        %{data: "value"}
+                      ) == :ok
+             end) =~
+               "Tracking LaunchDarkly event: \"event_name\" with context: %{key: \"user_key\", country: \"US\"} and data: %{data: \"value\"}"
+    end
+  end
+
+  describe "track/4" do
+    test "tracks an event" do
+      assert capture_log(fn ->
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+
+               assert Flagship.FeatureFlags.track(
+                        "event_name",
+                        %{:key => "user_key", :country => "US"},
+                        %{data: "value"},
+                        :sample_tag
+                      ) == :ok
+             end) =~
+               "Tracking LaunchDarkly event: \"event_name\" with context: %{key: \"user_key\", country: \"US\"} and data: %{data: \"value\"} with tag: sample_tag"
+    end
+  end
 end
