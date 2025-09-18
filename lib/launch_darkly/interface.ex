@@ -9,7 +9,10 @@ defmodule Flagship.LaunchDarkly.Interface do
   @callback start_instance(sdk_key :: binary(), opts :: map()) :: :ok | {:error, atom(), term()}
   @callback stop_all_instances() :: :ok
   @callback variation(flag_name :: binary(), context :: map(), fallback :: term()) :: term()
+  @since "0.6.1"
   @callback track(event_name :: binary(), context :: map(), data :: map()) :: :ok
+  @since "0.6.2"
+  @callback track(event_name :: binary(), context :: map(), data :: map(), tag :: atom()) :: :ok
 
   # ldclient_testdata
   @callback test_update(flag_builder :: term()) :: :ok

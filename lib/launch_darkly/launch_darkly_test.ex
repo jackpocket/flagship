@@ -38,6 +38,9 @@ defmodule Flagship.LaunchDarklyTest do
   @impl true
   def track(event_name, context, data), do: :ok
 
+  @impl true
+  def track(event_name, context, data, tag), do: :ok
+
   #### Private functions ####
 
   defp flag(flag_name) do
