@@ -12,6 +12,25 @@ defmodule Flagship.FeatureFlagsTest do
     end
   end
 
+  describe "get/2" do
+    test "returns fallback if flag not found with default context" do
+      Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+      Application.put_env(:flagship, :default_context, %{})
+      {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+      assert Flagship.FeatureFlags.get("fake_flag_name", false) == false
+    end
+
+    test "calls the LaunchDarkly SDK with default context" do
+      assert capture_log(fn ->
+               Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
+               Application.put_env(:flagship, :default_context, %{kind: "user", key: "default-user"})
+               {:ok, _pid} = FeatureFlags.start_link(name: Flagship.FeatureFlags)
+               assert Flagship.FeatureFlags.get("fake_flag_name", true) == true
+             end) =~
+               "Looking up value for LaunchDarkly flag: fake_flag_name with context:"
+    end
+  end
+
   describe "get/3" do
     test "returns fallback if flag not found" do
       Application.put_env(:flagship, :ld_sdk_key, "fake-sdk-key")
